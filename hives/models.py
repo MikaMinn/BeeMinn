@@ -1,7 +1,6 @@
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
-
     
 class Zones(models.Model):
     name = models.CharField('nom', max_length=100, unique=True)
@@ -17,6 +16,7 @@ class Zones(models.Model):
 
 class Hives(models.Model):
     name = models.CharField('nom', max_length=100, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField('date de création', auto_now_add=True)
     year = models.IntegerField('Année de la reine', default=2020)
     origin = models.CharField('origine', max_length=100, default="Eleveur")

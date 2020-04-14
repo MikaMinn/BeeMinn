@@ -15,28 +15,32 @@ class SignUpForm(UserCreationForm):
        label="Username",
        widget=forms.TextInput(
            attrs={
-               "class": "form-control"
+               "class": "form-control",
+               "placeholder" : "Nom d'utilisateur"
            }
        ))
    email = forms.EmailField(
        label="Email ",
        widget=forms.EmailInput(
            attrs={
-               "class": "form-control"
+               "class": "form-control",
+               "placeholder" : "Adresse email"
            }
        ))
    password1 = forms.CharField(
        label="password",
        widget=forms.PasswordInput(
            attrs={
-               "class": "form-control"
+               "class": "form-control",
+               "placeholder" : "Mot de passe"
            }
        ))
    password2 = forms.CharField(
        label="re-enter your password",
        widget=forms.PasswordInput(
            attrs={
-               "class": "form-control"
+               "class": "form-control",
+               "placeholder" : "Encore une fois !"
            }
        ))
 
@@ -67,6 +71,7 @@ class AddHive(ModelForm):
 
     class Meta:
         model = Hives
+        exclude = ('user',)
         fields = ["name", "year", "origin", "zone", "hive_type", "frame_number", "description"]
         widgets = {
             'name' : TextInput(attrs={'class': "form-control"}),

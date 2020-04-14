@@ -7,12 +7,11 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Hives, Zones, History
 from .forms import AddHistory, AddHive, AddZone, ParagraphErrorList, SignUpForm, CustomAuthForm
 
-
-
 datetime.now()
 
+@login_required
 def index(request):
-    return render(request, 'hives/index.html')
+    return redirect('hives:hives')
 
 @login_required
 def hives(request):
@@ -67,9 +66,11 @@ def add_hive(request):
     }
 
     if request.method == 'POST':
-        form = AddHive(request.user, request.POST)
+        form = AddHive(request.POST)
         if form.is_valid():
-            hive.save()
+            hive_add = form.save(commit=False)
+            hive_add.user = request.user
+            hive_add = form.save()
             return redirect('hives:hives')
             
         else:
@@ -80,26 +81,31 @@ def add_hive(request):
 
 @login_required
 def edit_hive(request, hive_id):
-    hive = Hives.objects.get(pk=hive_id)
-    form = AddHive(instance=hive)
-    edit_mode = True
-    context = {
-        'form': form,
-        'edit_mode' : edit_mode,
-        'hive' : hive,
-    }
+    object = Hives.objects.get(id=hive_id)
+    if object.user == request.user :
+        hive = Hives.objects.get(pk=hive_id)
+        form = AddHive(instance=hive)
+        form.fields["zone"].queryset = Zones.objects.filter(user=request.user)
+        edit_mode = True
+        context = {
+            'form': form,
+            'edit_mode' : edit_mode,
+            'hive' : hive,
+        }
 
-    if request.method == 'POST':
-        form = AddHive(request.POST, instance=hive)
-        if form.is_valid():
-            form.save()
-            return redirect('hives:hives')
-        else:
-            context['errors'] = form.errors.items()
-            return render(request, 'hives/add_hive.html', context)
+        if request.method == 'POST':
+            form = AddHive(request.POST, instance=hive)
+            if form.is_valid():
+                form.save()
+                return redirect('hives:hives')
+            else:
+                context['errors'] = form.errors.items()
+                return render(request, 'hives/add_hive.html', context)
 
 
-    return render(request, 'hives/add_hive.html', context)        
+        return render(request, 'hives/add_hive.html', context)        
+    else:
+        return redirect('hives:hives')
 
 @login_required
 def zone(request):
@@ -130,42 +136,52 @@ def zone(request):
 
 @login_required
 def edit_zone(request, zone_id):
-    zone = Zones.objects.get(pk=zone_id)
-    form = AddZone(instance=zone)
-    button_title = "Modifier la zone"
-    title = "Modifier la zone : " + zone.name
-    context = {
-        'form': form,
-        'zones': Zones.objects.filter(user=request.user),
-        'button_title' : button_title,
-        'title' : title,
-    }
+    object = Zones.objects.get(id=zone_id)
+    if object.user == request.user :
+        zone = Zones.objects.get(pk=zone_id)
+        form = AddZone(instance=zone)
+        button_title = "Modifier la zone"
+        title = "Modifier la zone : " + zone.name
+        context = {
+            'form': form,
+            'zones': Zones.objects.filter(user=request.user),
+            'button_title' : button_title,
+            'title' : title,
+        }
 
-    if request.method == 'POST':
-        form = AddZone(request.POST, instance=zone)
-        if form.is_valid():
-            zone_add = form.save(commit=False)
-            zone_add.user = request.user
-            zone_add.save()
-            return redirect('hives:hives')
-            
-        else:
-            context['errors'] = form.errors.items()
-            return render(request, 'hives/zone.html', context)
+        if request.method == 'POST':
+            form = AddZone(request.POST, instance=zone)
+            if form.is_valid():
+                zone_add = form.save(commit=False)
+                zone_add.user = request.user
+                zone_add.save()
+                return redirect('hives:hives')
+                
+            else:
+                context['errors'] = form.errors.items()
+                return render(request, 'hives/zone.html', context)
 
 
-    return render(request, 'hives/zone.html', context)  
+        return render(request, 'hives/zone.html', context)  
+    else:
+        return redirect('hives:hives')
 
 @login_required
 def delete_hive(request, hive_id):
     object = Hives.objects.get(id=hive_id)
-    object.delete()
-    return redirect('hives:hives')
-
+    if object.user == request.user :
+        object.delete()
+        return redirect('hives:hives')
+    else :
+        return redirect('hives:hives')
+   
 @login_required
 def delete_zone(request, zone_id):
     object = Zones.objects.get(id=zone_id)
-    object.delete()
+    if object.user == request.user :
+        object = Zones.objects.get(id=zone_id)
+        object.delete()
+        return redirect('hives:zones')
     return redirect('hives:zones')
 
 def register(request):
