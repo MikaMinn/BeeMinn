@@ -1,0 +1,6 @@
+env/
+beeminn/beeminn/__pycache__
+beeminn/hives/__pycache__/
+beeminn/hives/management/
+beeminn/hives/migrations/__pycache__/
+beeminn/settings.py

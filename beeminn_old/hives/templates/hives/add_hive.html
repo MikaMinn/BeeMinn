@@ -1,0 +1,83 @@
+{% extends 'hives/base.html' %}
+
+{% block title %}Créer une ruche{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col text-center">
+                        <img class="brand-image" src={% static 'hives/dist/img/beehive_wood.png' %} alt="Photo">
+                    </div>
+                </div>
+                <form role="form" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label> Nom de la ruche </label>
+                            {{ form.name }}
+                        </div>
+                        <div class="form-group">
+                            <label> Année de la reine </label>
+                            {{ form.year }}
+                        </div>
+                        <div class="form-group">
+                            <label> Origine de l'essaim </label>
+                            {{ form.origin }}
+                        </div>
+                        <div class="form-group">
+                            <label> Zone où se situe la ruche </label>
+                            {{ form.zone }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">    
+                        <div class="form-group">
+                            <label> Type de la ruche </label>
+                            {{ form.hive_type }}
+                        </div>
+                        <div class="form-group">
+                            <label> Nombres de cadre </label>
+                            {{ form.frame_number }}
+                        </div>
+                        <div class="form-group">
+                            <label> Description suplémentaire {{namechiasse}} {{yearchiasse}} </label>
+                            {{ form.description }}
+                        </div>
+                        <div class="d-flex flex-row-reverse bd-highlight">
+                            
+                            <div class="pb-2 bd-highlight">
+                                
+                            </div>
+                            
+                            <div class="pb-2 bd-highlight">
+
+                                {% if edit_mode %}
+                                    <a class="btn btn-danger mt-1" href="/hives/delete_hive/{{hive.id}}" role="button"><i class="fas fa-trash mr-1"> </i>  Supprimer la ruche</a>
+                                {% endif %}
+
+                                <button type="submit" class="btn btn-success mt-1" >
+                                    <i class="fas fa-plus mr-1"> </i>  Ajouter
+                                </button>        
+                            </div>
+                        </div>
+                        {% if errors %}
+                            <div class="alert alert-danger alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <h5><i class="icon fas fa-ban"></i> Erreur </h5>
+                               {{ errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>  
+
+</div><!-- /.container-fluid -->
+
+{% endblock %}
