@@ -72,15 +72,26 @@
             <input type="submit" value="login" class="btn btn-primary btn-block">
             <input type="hidden" name="next" value="{{ next }}" class="btn btn-primary btn-block"> 
             {% if form.errors %}
-                <p><strong>Utilisateur inconnu ou mauvais de mot de passe.</strong></p>
+              {% for field in form %}
+                  {% for error in field.errors %}
+                      <div class="alert alert-danger">
+                          <strong>{{ error|escape }}</strong>
+                      </div>
+                  {% endfor %}
+              {% endfor %}
+              {% for error in form.non_field_errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
             {% endif %}
-            {% endif %} 
+          {% endif %} 
           </div>
           <!-- /.col -->
         </div>
       </form>
       <p class="mb-1">
-        <a href="forgot-password.html">J'ai oublié mon mot de passe</a>
+        <a href="">J'ai oublié mon mot de passe</a>
       </p>
       <p class="mb-0">
         <a href="/register" class="text-center">Enregistrer un nouveau compte</a>

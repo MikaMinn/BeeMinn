@@ -7,8 +7,8 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 
 class CustomAuthForm(AuthenticationForm):
-    username = forms.CharField(widget=TextInput(attrs={'class': 'form-control','placeholder': 'Email'}))
-    password = forms.CharField(widget=PasswordInput(attrs={'class': 'form-control','placeholder':'Password'}))
+    username = forms.CharField(widget=TextInput(attrs={'class': 'form-control','placeholder': 'Utilisateur'}))
+    password = forms.CharField(widget=PasswordInput(attrs={'class': 'form-control','placeholder':'Mot de passe'}))
 
 class SignUpForm(UserCreationForm):
    username = forms.CharField(

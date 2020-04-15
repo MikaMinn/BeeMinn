@@ -72,8 +72,22 @@
         <div class="row pb-2">
           <!-- /.col -->
           <div class="col-6">
-            <button type="submit" class="btn btn-primary btn-block">S'enregistrer</button>
+            <button type="submit" class="btn btn-primary btn-block mb-2">S'enregistrer</button>
           </div>
+          {% if form.errors %}
+              {% for field in form %}
+                  {% for error in field.errors %}
+                      <div class="mt-1 alert alert-danger alert-dismissible">
+                          <strong>{{ error|escape }}</strong>
+                      </div>
+                  {% endfor %}
+              {% endfor %}
+              {% for error in form.non_field_errors %}
+                  <div class="mt-1 alert alert-danger alert-dismissible">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+          {% endif %}
           <!-- /.col -->
         </div>
       </form>
