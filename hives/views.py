@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Hives, Zones, History
 from .forms import AddHistory, AddHive, AddZone, ParagraphErrorList, SignUpForm, CustomAuthForm
+from .filters import HivesFilter
 
 datetime.now()
 
@@ -183,6 +184,19 @@ def delete_zone(request, zone_id):
         object.delete()
         return redirect('hives:zones')
     return redirect('hives:zones')
+
+@login_required
+def search(request):
+    
+    hives = Hives.objects.filter(user=request.user)
+    myFilter = HivesFilter(request.GET, queryset=hives)
+    myFilter.filters["zone"].queryset = Zones.objects.filter(user=request.user)
+    hives = myFilter.qs 
+    context = {
+        'myFilter':myFilter,
+        'hives':hives
+        }
+    return render(request, 'hives/result_search.html', context)
 
 def register(request):
     if request.method == "POST":

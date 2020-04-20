@@ -26,7 +26,7 @@ class Hives(models.Model):
         ('Langstroth' , 'Langstroth'),
         ('Warré' , 'Warré')
     ]
-    hive_type = models.CharField('nom du type de ruche', max_length=100, choices=type)
+    hive_type = models.CharField('Type de ruche', max_length=100, choices=type)
     frame_number = models.IntegerField('nombre de cadre', default="10")
     description = models.TextField('description', max_length=500, blank=True)
     class Meta:
@@ -34,7 +34,7 @@ class Hives(models.Model):
 
     def __str__(self):
         return self.name
-
+    
 class History(models.Model):
     created_at = models.DateTimeField('date de création', default=datetime.now)
     details = models.TextField('détails', max_length=1000)
