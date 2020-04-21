@@ -27,41 +27,42 @@
                     <h3 class="card-title">Résultats</h3>
                 </div>
                 <div class="card-body p-0">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Nom de la ruche</th>
-                                <th>Zone du rucher</th>
-                                <th>Année de la reine</th>
-                                <th>Origine de l'essaim</th>
-                                <th>Type de ruche</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for hive in hives %}
-                            <tr>
-                                <td>{{hive.name}}</td>
-                                <td>{{hive.zone}}</td>
-                                <td>{{hive.year}}</td>
-                                <td>{{hive.origin}}</td>
-                                <td>{{hive.hive_type}}</td>
-                                <td>
-                                    <a href="/hives/edit_hive/{{ hive.id }}" class="btn btn-sm bg-purple">
-                                        <i class="fas fa-cogs"></i>
-                                    </a>
-                                    <a href="/hives/{{ hive.id }}" class="btn btn-sm btn-primary">
-                                        <i class="fas fa-user"></i>  Detail de la ruche
-                                    </a>
-                                </td>
-                            </tr>         
-                        {% endfor %}
-                        </tbody>   
-                    </table>
+                <div class="table-responsive">
+                        <table class="table table-striped table-hover dt-responsive display nowrap" id="example">
+                            <thead>
+                                <tr>
+                                    <th>Nom de la ruche</th>
+                                    <th>Zone du rucher</th>
+                                    <th>Année de la reine</th>
+                                    <th>Origine de l'essaim</th>
+                                    <th>Type de ruche</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for hive in hives %}
+                                <tr>
+                                    <td><a href="/hives/edit_hive/{{ hive.id }}">{{hive.name}}</a></td>
+                                    <td>{{hive.zone}}</td>
+                                    <td>{{hive.year}}</td>
+                                    <td>{{hive.origin}}</td>
+                                    <td>{{hive.hive_type}}</td>
+                                    <td>
+                                        <a href="/hives/edit_hive/{{ hive.id }}" class="btn btn-sm bg-purple">
+                                            <i class="fas fa-cogs"></i>
+                                        </a>
+                                        <a href="/hives/{{ hive.id }}" class="btn btn-sm bg-primary">
+                                            <i class="fas fa-user"></i>
+                                        </a>
+                                    </td>
+                                </tr>         
+                            {% endfor %}
+                            </tbody>   
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}
